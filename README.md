@@ -26,6 +26,3 @@ Discord Developer Portal: [https://discord.com/developers/applications/](https:/
     * **KEY:** DISCORD_TOKEN
     * **VALUE:** *(Enter the bot token copied from the Discord Developer Portal)*
     * '**Add**' your bot token to Config Vars.
-* Navigate to the '**Resources**' section and do the following:
-  * Switch on your worker by using the 'Pencil' icon and confirming your decision.
-  * ~Note: You are given 550 free Dyno hours, which will not span the entire month; however, if you provide a credit card to verify your identity, you are given an additional 450 Dyno hours, which will allow your bot to run 24/7.~ This will no longer be applicable as of Nov. 28, 2022.
