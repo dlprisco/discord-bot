@@ -1,10 +1,12 @@
 import discord
 from discord.ext import commands
+
 import random
 import os
+
 from coinmarketcapapi import CoinMarketCapAPI
 
-cmc = CoinMarketCapAPI('4d9d9591-bba7-4c45-9db1-25ce9d62a69c')
+cmc = CoinMarketCapAPI(os.getenv('COIN_MARKET_API'))
 
 description = '''An example bot to showcase the discord.ext.commands extension
 module.
@@ -56,5 +58,6 @@ async def _bot(ctx):
     await ctx.send('Yes, the bot is cool.')
 
 
-bot.run('OTE5NjQzOTgxMDk1MjQzNzc2.GkRu2s.Hz2LYlRujQDICemuYxRMLPqD9l3WxaWcmkKY68
-')
+
+if __name__ == '__main__':
+    bot.run(os.getenv('DISCORD_TOKEN'))
