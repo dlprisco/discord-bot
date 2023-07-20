@@ -95,5 +95,54 @@ async def player(ctx, *, name: str):
     except fortnite_api.errors.NotFound as e:
         await ctx.send("Incorrect player name")
         await ctx.send(e)
+
+@bot.command()
+async def shop(ctx, mode):
+    """A command to request shop data"""
+    shop = api.shop.fetch()
+    shop_entries = getattr(shop, mode)
+    shop_entries = shop_entries.entries
+    max_embeds = 0
+    for entry in shop_entries:
+        price = entry.raw_data['regularPrice']
+        category = entry.categories
+        dev_name = entry.dev_name
+        discount = entry.discount
+        final_price = entry.final_price
+        showcase_video = "https://youtube.com/watch?=%s" % (entry.raw_data['items'][0]['showcaseVideo'])
+        embed = discord.Embed()
+        embed.title = entry.raw_data['items'][0]['name']
+        embed.description = 'Dev name: %s \nDiscount:  %d \nPrice: $ %d \nFinal price: $ %d' % (dev_name, discount, price, final_price)
+        embed.set_footer(text= "ID: " + entry.raw_data['items'][0]['id'], icon_url=entry.raw_data['items'][0]['images']['icon'])
+        embed.set_image(url=entry.raw_data['items'][0]['images']['featured'])
+        embed.video.url = showcase_video
+        await ctx.send(embed=embed)
         
+@bot.command()
+async def news(ctx, gamemode='br'):
+    news = api.news.fetch()
+    #news = getattr(news, gamemode)
+    if gamemode == 'br':
+        embeds = []
+        date = news.raw_data['br']['date']
+        embed = discord.Embed()
+        embed.set_image(url=news.raw_data['br']['image'])
+        embeds.append(embed)
+        for i in news.raw_data['br']['motds']:
+            embed = discord.Embed()
+            embed.title = i['title']
+            embed.set_image(url=i['image'])
+            embed.description = i['body']
+            embeds.append(embed)
+        await ctx.send(embeds=embeds)
+    
+@bot.command()
+async def map(ctx, emoji=''):
+    map = api.map.fetch()
+    map_poi = map.poi_image
+    embed = discord.Embed()
+    embed.description = "Map & Points Of Interests\n" + "\n".join(["%s  %s %s %s" % (i.name, str(i.location.x), str(i.location.y), str(i.location.z)) for i in map.pois])
+    embed.set_image(url = map_poi)
+    await ctx.send(embed=embed)
+    
 bot.run('YOUR-TOKEN')
